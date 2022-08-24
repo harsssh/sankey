@@ -49,10 +49,10 @@ func shortenURI(uri string) string {
 func getID(ua string) int {
 	id, ok := UAToID[ua]
 	if !ok {
-		id = count
+		id = seq
 		UAToID[ua] = id
 		IDToUA[id] = ua
-		count++
+		seq++
 	}
 	return id
 }

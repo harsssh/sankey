@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 	"regexp"
@@ -10,7 +9,8 @@ import (
 
 var IDToUA map[int]string
 var UAToID map[string]int
-var count int
+var transitionCount map[Transition]int
+var seq int
 
 type Request struct {
 	Method string
@@ -22,13 +22,32 @@ type Log struct {
 	Request *Request
 }
 
-func main() {
+type Transition struct {
+	From Request
+	To   Request
+}
+
+func init() {
 	IDToUA = make(map[int]string)
 	UAToID = make(map[string]int)
+	transitionCount = make(map[Transition]int)
+}
 
+func main() {
 	logs := parse(os.Stdin)
+	countTransition(logs)
+}
+
+func countTransition(logs []*Log) {
+	prev := make(map[int]*Request)
 	for _, log := range logs {
-		fmt.Printf("%d %s %s\n", log.ID, log.Request.Method, log.Request.URI)
+		from, ok := prev[log.ID]
+		if ok {
+			flow := Transition{*from, *log.Request}
+			transitionCount[flow]++
+		} else {
+			prev[log.ID] = log.Request
+		}
 	}
 }
 
