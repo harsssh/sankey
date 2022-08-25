@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/csv"
 	"fmt"
 	"io"
 	"os"
@@ -41,9 +42,35 @@ func init() {
 func main() {
 	logs := parse(os.Stdin)
 	countTransition(logs)
-	for t, count := range transitionCount {
-		fmt.Println(t, count)
+	save()
+}
+
+func save() {
+	records := createRecords()
+	f, err := os.Create("data.csv")
+	if err != nil {
+		panic(err)
 	}
+
+	w := csv.NewWriter(f)
+	err = w.WriteAll(records)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func createRecords() [][]string {
+	records := [][]string{
+		{"source", "target", "value"},
+	}
+	for t, count := range transitionCount {
+		records = append(records, []string{
+			t.From.String(),
+			t.To.String(),
+			fmt.Sprintf("%d", count),
+		})
+	}
+	return records
 }
 
 func countTransition(logs []*Log) {

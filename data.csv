@@ -1,0 +1,22 @@
+source,target,value
+POST /login,GET /api/users/me,3
+GET /api/users/me,GET /api/users/me,19
+GET /api/users/me,POST /api/courses,1
+POST /api/courses,PUT /api/courses/*/status,1
+POST /api/courses/*/classes,POST /api/courses/*/classes,19
+POST /login,GET /api/courses,1
+POST /login,POST /login,1
+GET /api/courses/*/classes,POST /api/courses/*/classes/*/assignments,16
+GET /api/courses,GET /api/courses,15
+POST /api/courses,POST /api/courses,19
+PUT /api/users/me/courses,GET /api/users/me/courses,2
+PUT /api/courses/*/status,PUT /api/courses/*/status,19
+GET /api/courses/*/classes,GET /api/courses/*/classes,24
+GET /api/users/me,PUT /api/users/me/courses,2
+PUT /api/courses/*/status,POST /api/courses/*/classes,1
+POST /api/courses/*/classes,POST /api/announcements,1
+POST /api/announcements,POST /api/announcements,19
+GET /api/users/me/courses,GET /api/courses/*/classes,2
+POST /api/courses/*/classes/*/assignments,GET /api/courses/*/classes,14
+POST /api/courses/*/classes/*/assignments,POST /api/courses/*/classes/*/assignments,24
+GET /,GET /,1
