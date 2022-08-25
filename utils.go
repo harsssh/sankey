@@ -31,10 +31,10 @@ func shortenURI(uri string) string {
 	pat = regexp.MustCompile(`/`)
 	match := pat.Split(uri, -1)
 
-	// 数字を含む部分を短縮
+	// 数字, 拡張子を含む部分を短縮
 	var replaced []string
 	for _, s := range match {
-		pat = regexp.MustCompile(`\d+`)
+		pat = regexp.MustCompile(`(\d|\..+$)+`)
 		if pat.MatchString(s) {
 			replaced = append(replaced, "*")
 		} else {
