@@ -112,6 +112,9 @@ func parse(r io.Reader) []*Log {
 	var logs []*Log
 	for scanner.Scan() {
 		log := parseLine(scanner.Text())
+		if log == nil {
+			continue
+		}
 		logs = append(logs, log)
 	}
 
@@ -130,6 +133,10 @@ func parseLine(line string) *Log {
 	// 最初がHTTPリクエスト、最後がUser-Agent
 	r := trimQuotes(match[0])
 	ua := trimQuotes(match[len(match)-1])
+
+	if !validateRequest(r) {
+		return nil
+	}
 
 	id := getID(ua)
 	req := &Request{

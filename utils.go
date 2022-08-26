@@ -9,6 +9,11 @@ func trimQuotes(s string) string {
 	return s[1 : len(s)-1]
 }
 
+func validateRequest(r string) bool {
+	pat := regexp.MustCompile(`(GET|POST|PUT|DELETE|HEAD|OPTIONS|TRACE|CONNECT)\s+`)
+	return pat.MatchString(r)
+}
+
 func extractMethod(r string) string {
 	pat := regexp.MustCompile(`\s+`)
 	match := pat.Split(r, -1)
