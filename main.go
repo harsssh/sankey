@@ -43,6 +43,8 @@ func main() {
 	logs := parse(os.Stdin)
 	//logs = pick(logs, 32)
 	countTransition(logs)
+
+	fmt.Printf("ユーザー数: %d\n", seq)
 	save()
 }
 
