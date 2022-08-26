@@ -41,8 +41,19 @@ func init() {
 
 func main() {
 	logs := parse(os.Stdin)
+	//logs = pick(logs, 32)
 	countTransition(logs)
 	save()
+}
+
+func pick(logs []*Log, id int) []*Log {
+	var picked []*Log
+	for _, log := range logs {
+		if log.ID == id {
+			picked = append(picked, log)
+		}
+	}
+	return picked
 }
 
 func save() {
