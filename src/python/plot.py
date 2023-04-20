@@ -1,23 +1,28 @@
 import plotly.graph_objects as go
 import pandas as pd
+import sys
+
+HEADER_SRC = 'source'
+HEADER_DST = 'target'
+HEADER_CNT = 'value'
 
 
 def pick(df: pd.DataFrame) -> pd.DataFrame:
-    low = 10
-    high = df['value'].quantile(0.95)
-    return df.query('@low < value < @high')
+    low = df[HEADER_CNT].quantile(0.25)
+    high = df[HEADER_CNT].quantile(1.00)
+    return df.query(f'@low < {HEADER_CNT} < @high')
 
 
 def convert(df: pd.DataFrame) -> (pd.DataFrame, list):
-    _, labels = df['source'].factorize()
+    _, labels = df[HEADER_SRC].factorize()
     idx = range(len(labels))
     dic = dict(zip(labels, idx))
     return df.replace(dic), labels.to_list()
 
 
 def main():
-    df = pd.read_csv('data.csv')
-    # df = pick(df)
+    df = pd.read_csv(sys.stdin)
+    df = pick(df)
     df, labels = convert(df)
 
     fig = go.Figure(data=[go.Sankey(
